@@ -246,24 +246,6 @@ export default function App() {
         }}
       >
         <h3 style={{ fontWeight: "bold", marginBottom: "10px" }}>📜 Histórico do Fluxo:</h3>
-        <button
-          onClick={() => {
-            setEtapa("inicio");
-            setLog([]);
-          }}
-          style={{
-            marginBottom: "20px",
-            padding: "8px 16px",
-            borderRadius: "8px",
-            backgroundColor: "#111",
-            color: "#fff",
-            border: "none",
-            cursor: "pointer",
-            fontWeight: "bold",
-          }}
-        >
-          Resetar Fluxo
-        </button>
         {log.length === 0 ? (
           <p style={{ color: "#6b7280" }}>Nenhuma ação registrada ainda.</p>
         ) : (
