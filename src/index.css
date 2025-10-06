@@ -1,0 +1,209 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: black;
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: black;
+  text-decoration: inherit;
+}
+a:hover {
+  color: black;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+  color: white;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+/* Reset básico e fundo da tela */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  background-color: purple; /* Cor de fundo roxa */ 
+  background: url('/purple-gradient-background-1440-x-1080-3316c9jqup3wf5f6.jpg') no-repeat center center fixed;
+  background-size: cover;
+  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box; 
+  
+}
+
+/* Remove padding/margin de todos os elementos */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Título */
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: #1e40af; /* azul Tailwind */
+  font-weight: bold;
+}
+
+/* Cards (Swimlanes) */
+.card {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  min-width: 220px;
+  flex: 1 1 220px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+/* Títulos dos setores */
+.card h2 {
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #374151; /* cinza escuro */
+  font-size: 1.2rem;
+}
+
+/* Botões padrão */
+button {
+  padding: 8px 16px;
+  border-radius: 8px;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+/* Botões por setor */
+button.direcao {
+  background-color: #2563eb; /* azul */
+}
+
+button.direcao:hover {
+  background-color: #1e3aa3;
+}
+
+button.servicos {
+  background-color: #16a34a; /* verde */
+}
+
+button.servicos:hover {
+  background-color: #127233;
+}
+
+button.solicitante {
+  background-color: #7c3aed; /* roxo */
+}
+
+button.solicitante:hover {
+  background-color: #5b21b6;
+}
+
+button.indisponivel {
+  background-color: #b91c1c; /* vermelho */
+}
+
+button.indisponivel:hover {
+  background-color: #7f1d1d;
+}
+
+/* Textos de status */
+.status-sucesso {
+  color: #15803d; /* verde */
+  font-weight: bold;
+}
+
+.status-falha {
+  color: #b91c1c; /* vermelho */
+  font-weight: bold;
+}
+
+/* Relatório SISMAT */
+.relatorio {
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid #d1d5db;
+  font-size: 0.9rem;
+  color: #4b5563; /* cinza médio */
+}
+
+/* Histórico */
+.historico {
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  max-width: 1200px;
+  width: 100%;
+}
+
+.historico h3 {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.historico p {
+  color: #6b7280;
+}
+
+.historico ul {
+  list-style-type: disc;
+  padding-left: 20px;
+  text-align: left;
+  gap: 5px;
+}
+
