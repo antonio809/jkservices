@@ -82,8 +82,8 @@ export default function App() {
               borderRadius: "12px",
               padding: "20px",
               boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-              minWidth: "180px",
-              maxWidth: "220px",
+              minWidth: "200px",
+              maxWidth: "250px",
               flex: "1 1 220px",
               textAlign: "center",
             }}
@@ -99,70 +99,115 @@ export default function App() {
               {s.nome}
             </h2>
 
-            {/* Direção */}
+            {/* DIREÇÃO */}
             {s.id === "direcao" && etapa === "inicio" && (
-              <select
-                onChange={(e) => {
-                  const escolha = e.target.value;
-                  if (escolha) {
-                    avancar(
-                      "pedidoServicos",
-                      `📌 Direção solicitou ${escolha} aos Serviços Gerais`
-                    );
-                  }
-                }}
-                defaultValue=""
-                style={{
-                  width: "100%",
-                  padding: "8px",
-                  borderRadius: "8px",
-                  border: "1px solid #ccc",
-                  cursor: "pointer",
-                }}
-              >
-                <option value="" disabled>
-                  Escolha um tipo de material
-                </option>
-                <option value="material de limpeza">Material de Limpeza</option>
-                <option value="material de escritório">Material de Escritório</option>
-                <option value="equipamento eletrônico">Equipamento Eletrônico</option>
-                <option value="uniformes">Uniformes</option>
-              </select>
+              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                <button onClick={() => setEtapa("limpeza")} style={botaoEstilo("#3b82f6")}>
+                  🧴 Material de Limpeza
+                </button>
+                <button onClick={() => setEtapa("eletronico")} style={botaoEstilo("#9333ea")}>
+                  💻 Material Eletrônico
+                </button>
+                <button onClick={() => setEtapa("equipamento")} style={botaoEstilo("#10b981")}>
+                  ⚙️ Equipamento Eletrônico
+                </button>
+                <button onClick={() => setEtapa("uniforme")} style={botaoEstilo("#f59e0b")}>
+                  👕 Uniformes
+                </button>
+              </div>
             )}
 
-            {/* Serviços Gerais */}
+            {/* Seletor: Material de Limpeza */}
+            {s.id === "direcao" && etapa === "limpeza" &&
+              selectEtapa(
+                "Escolha o item de limpeza",
+                [
+                  "Detergente e Papel Toalha",
+                  "Álcool em Gel e Desinfetante",
+                  "Sabonete Líquido e Pano de Chão",
+                ],
+                (item) =>
+                  avancar(
+                    "pedidoServicos",
+                    `📌 Direção solicitou ${item} (Material de Limpeza) aos Serviços Gerais`
+                  )
+              )}
+
+            {/* Seletor: Material Eletrônico */}
+            {s.id === "direcao" && etapa === "eletronico" &&
+              selectEtapa(
+                "Escolha o material eletrônico",
+                [
+                  "Bateria e Cabo HDMI",
+                  "Fonte de Energia e Carregador",
+                  "Pendrive e Adaptador USB",
+                ],
+                (item) =>
+                  avancar(
+                    "pedidoServicos",
+                    `📌 Direção solicitou ${item} (Material Eletrônico) aos Serviços Gerais`
+                  )
+              )}
+
+            {/* Seletor: Equipamento Eletrônico */}
+            {s.id === "direcao" && etapa === "equipamento" &&
+              selectEtapa(
+                "Escolha o equipamento eletrônico",
+                [
+                  "Monitor e Teclado",
+                  "Impressora e Scanner",
+                  "Projetor e Caixa de Som",
+                ],
+                (item) =>
+                  avancar(
+                    "pedidoServicos",
+                    `📌 Direção solicitou ${item} (Equipamento Eletrônico) aos Serviços Gerais`
+                  )
+              )}
+
+            {/* Seletor: Uniformes */}
+            {s.id === "direcao" && etapa === "uniforme" &&
+              selectEtapa(
+                "Escolha o uniforme",
+                [
+                  "Jalecos e Botas de Segurança",
+                  "Camisas e Calças Padronizadas",
+                  "Luvas e Toucas Descartáveis",
+                ],
+                (item) =>
+                  avancar(
+                    "pedidoServicos",
+                    `📌 Direção solicitou ${item} (Uniformes) aos Serviços Gerais`
+                  )
+              )}
+
+            {/* SERVIÇOS GERAIS */}
             {s.id === "servicos" && etapa === "pedidoServicos" && (
               <select
                 onChange={(e) => {
                   const escolha = e.target.value;
                   if (escolha) {
-                    avancar(
-                      "solicitacaoAlmox",
-                      `🧹 Serviços Gerais ${escolha} ao Almoxarifado`
-                    );
+                    avancar("solicitacaoAlmox", `🧹 Serviços Gerais ${escolha} ao Almoxarifado`);
                   }
                 }}
                 defaultValue=""
-                style={{
-                  width: "100%",
-                  padding: "8px",
-                  borderRadius: "8px",
-                  border: "1px solid #ccc",
-                  cursor: "pointer",
-                }}
+                style={selectStyle}
               >
                 <option value="" disabled>
                   Escolha uma ação
                 </option>
-                <option value="enviou pedido">Enviou Pedido</option>
-                <option value="solicitou reposição de estoque">
-                  Solicitou Reposição de Estoque
+                <option value="enviou pedido de materiais de limpeza">
+                  Enviou Pedido de Materiais de Limpeza
                 </option>
-                <option value="informou necessidade de compra">
-                  Informou Necessidade de Compra
+                <option value="solicitou reposição de equipamentos eletrônicos">
+                  Solicitou Reposição de Equipamentos Eletrônicos
+                </option>
+                <option value="informou necessidade de compra de uniformes">
+                  Informou Necessidade de Compra de Uniformes
                 </option>
               </select>
             )}
+
             {s.id === "servicos" && etapa === "recebeuMateriais" && (
               <p style={{ color: "#15803d", fontWeight: "bold" }}>
                 ✅ Recebeu materiais do Almoxarifado
@@ -174,48 +219,34 @@ export default function App() {
               </p>
             )}
 
-            {/* Setor Solicitante */}
+            {/* SETOR SOLICITANTE */}
             {s.id === "solicitante" && etapa === "inicio" && (
               <select
                 onChange={(e) => {
                   const pedido = e.target.value;
                   if (pedido) {
-                    avancar(
-                      "solicitacaoAlmox",
-                      `📝 Setor Solicitante requisitou ${pedido} ao Almoxarifado`
-                    );
+                    avancar("solicitacaoAlmox", `📝 Setor Solicitante requisitou ${pedido} ao Almoxarifado`);
                   }
                 }}
                 defaultValue=""
-                style={{
-                  width: "100%",
-                  padding: "8px",
-                  borderRadius: "8px",
-                  border: "1px solid #ccc",
-                  cursor: "pointer",
-                }}
+                style={selectStyle}
               >
                 <option value="" disabled>
                   Selecione uma opção
                 </option>
-                <option value="materiais de limpeza">Materiais de Limpeza</option>
-                <option value="papel A4 e canetas">Papel A4 e Canetas</option>
-                <option value="cartucho de impressora">Cartucho de Impressora</option>
-                <option value="álcool e desinfetante">Álcool e Desinfetante</option>
+                <option value="materiais de limpeza (detergente, papel higiênico, álcool)">
+                  Materiais de Limpeza (Detergente, Papel Higiênico, Álcool)
+                </option>
+                <option value="equipamentos eletrônicos (mouse, teclado, monitor)">
+                  Equipamentos Eletrônicos (Mouse, Teclado, Monitor)
+                </option>
+                <option value="uniformes (jalecos, coletes, botas)">
+                  Uniformes (Jalecos, Coletes, Botas)
+                </option>
               </select>
             )}
-            {s.id === "solicitante" && etapa === "recebeuMateriais" && (
-              <p style={{ color: "#15803d", fontWeight: "bold" }}>
-                📦 Recebeu materiais solicitados
-              </p>
-            )}
-            {s.id === "solicitante" && etapa === "faltaMateriais" && (
-              <p style={{ color: "#b91c1c", fontWeight: "bold" }}>
-                ❌ Recebeu aviso de falta de materiais
-              </p>
-            )}
 
-            {/* Almoxarifado */}
+            {/* ALMOXARIFADO */}
             {s.id === "almox" && etapa === "solicitacaoAlmox" && (
               <select
                 onChange={(e) => {
@@ -225,20 +256,11 @@ export default function App() {
                   } else if (status === "indisponivel") {
                     avancar("faltaMateriais", "⚠️ Almoxarifado informou falta de materiais");
                   } else if (status === "aguardando entrega") {
-                    avancar(
-                      "aguardandoEntrega",
-                      "⏳ Almoxarifado informou que os materiais estão aguardando entrega"
-                    );
+                    avancar("aguardandoEntrega", "⏳ Almoxarifado informou que os materiais estão aguardando entrega");
                   }
                 }}
                 defaultValue=""
-                style={{
-                  width: "100%",
-                  padding: "8px",
-                  borderRadius: "8px",
-                  border: "1px solid #ccc",
-                  cursor: "pointer",
-                }}
+                style={selectStyle}
               >
                 <option value="" disabled>
                   Verificar estoque
@@ -250,31 +272,29 @@ export default function App() {
             )}
 
             {s.id === "almox" && etapa === "aguardandoEntrega" && (
-              <p style={{ color: "#eab308", fontWeight: "bold" }}>
-                ⏳ Aguardando Entrega dos Materiais
-              </p>
+              <div>
+                <p style={{ color: "#eab308", fontWeight: "bold", marginBottom: "12px" }}>
+                  ⏳ Aguardando Entrega dos Materiais
+                </p>
+                <button
+                  onClick={() => avancar("recebeuMateriais", "✅ Almoxarifado finalizou a entrega dos materiais")}
+                  style={botaoEstilo("#16a34a")}
+                >
+                  Finalizar Entrega
+                </button>
+              </div>
             )}
 
-            {/* Relatório SISMAT */}
-            {s.id === "almox" &&
-              (etapa === "recebeuMateriais" || etapa === "faltaMateriais") && (
-                <div
-                  style={{
-                    marginTop: "15px",
-                    paddingTop: "10px",
-                    borderTop: "1px solid #d1d5db",
-                    fontSize: "0.9rem",
-                    color: "#4b5563",
-                  }}
-                >
-                  🗂 Relatório atualizado no SISMAT
-                </div>
-              )}
+            {s.id === "almox" && (etapa === "recebeuMateriais" || etapa === "faltaMateriais") && (
+              <div style={{ marginTop: "15px", paddingTop: "10px", borderTop: "1px solid #d1d5db", fontSize: "0.9rem", color: "#4b5563" }}>
+                🗂 Relatório atualizado no SISMAT
+              </div>
+            )}
           </div>
         ))}
       </div>
 
-      {/* Histórico */}
+      {/* HISTÓRICO */}
       <div
         style={{
           marginTop: "40px",
@@ -287,23 +307,10 @@ export default function App() {
         }}
       >
         <h3 style={{ fontWeight: "bold", marginBottom: "10px" }}>📜 Histórico do Fluxo:</h3>
-        <button
-          onClick={resetarFluxo}
-          style={{
-            marginBottom: "20px",
-            padding: "8px 16px",
-            borderRadius: "8px",
-            backgroundColor: "#111",
-            color: "#fff",
-            border: "none",
-            cursor: "pointer",
-            fontWeight: "bold",
-          }}
-        >
+        <button onClick={resetarFluxo} style={botaoEstilo("#111")}>
           Resetar Fluxo
         </button>
 
-        {/* Histórico Atual */}
         {log.length === 0 ? (
           <p style={{ color: "#6b7280" }}>Nenhuma ação registrada nesta execução.</p>
         ) : (
@@ -314,7 +321,6 @@ export default function App() {
           </ol>
         )}
 
-        {/* Histórico Anterior */}
         {historicoAnterior.length > 0 && (
           <div style={{ marginTop: "25px", borderTop: "1px solid #ccc", paddingTop: "15px" }}>
             <h4 style={{ fontWeight: "bold", marginBottom: "8px" }}>📦 Último Fluxo Registrado:</h4>
@@ -329,3 +335,42 @@ export default function App() {
     </div>
   );
 }
+
+/* ==== Funções auxiliares ==== */
+const botaoEstilo = (cor) => ({
+  padding: "8px 14px",
+  borderRadius: "8px",
+  backgroundColor: cor,
+  color: "#fff",
+  border: "none",
+  cursor: "pointer",
+  fontWeight: "bold",
+});
+
+const selectStyle = {
+  width: "100%",
+  padding: "8px",
+  borderRadius: "8px",
+  border: "1px solid #ccc",
+  cursor: "pointer",
+};
+
+const selectEtapa = (placeholder, opcoes, onSelect) => (
+  <select
+    onChange={(e) => {
+      const item = e.target.value;
+      if (item) onSelect(item);
+    }}
+    defaultValue=""
+    style={selectStyle}
+  >
+    <option value="" disabled>
+      {placeholder}
+    </option>
+    {opcoes.map((op, i) => (
+      <option key={i} value={op}>
+        {op}
+      </option>
+    ))}
+  </select>
+);
