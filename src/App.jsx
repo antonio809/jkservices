@@ -10,16 +10,24 @@ const setores = [
 export default function App() {
   const [etapa, setEtapa] = useState("inicio");
   const [log, setLog] = useState([]);
+  const [historicoAnterior, setHistoricoAnterior] = useState([]);
 
-  // Garante que o body tenha fundo cinza
   useEffect(() => {
-    document.body.style.backgroundColor = "#f3f4f6";
+    document.body.style.backgroundColor = "#000";
     document.body.style.margin = "0";
   }, []);
 
   const avancar = (proxima, mensagem) => {
     setEtapa(proxima);
     setLog((prev) => [...prev, mensagem]);
+  };
+
+  const resetarFluxo = () => {
+    if (log.length > 0) {
+      setHistoricoAnterior(log);
+    }
+    setEtapa("inicio");
+    setLog([]);
   };
 
   return (
@@ -33,7 +41,7 @@ export default function App() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center", // Centraliza verticalmente na tela
+        justifyContent: "center",
         backgroundImage: "url('/22f6e30f1b9f1ae190791fef079aaabe.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
@@ -48,7 +56,7 @@ export default function App() {
           textAlign: "center",
           fontSize: "2rem",
           marginBottom: "30px",
-          color: "#fff", // branco
+          color: "#fff",
           fontWeight: "bold",
         }}
       >
@@ -62,7 +70,7 @@ export default function App() {
           gap: "20px",
           flexWrap: "wrap",
           justifyContent: "center",
-          alignItems: "center", // Linha adicionada para centralizar verticalmente
+          alignItems: "center",
           width: "100%",
         }}
       >
@@ -84,7 +92,7 @@ export default function App() {
               style={{
                 fontWeight: "bold",
                 marginBottom: "15px",
-                color: "#374151", // cinza escuro
+                color: "#374151",
                 fontSize: "1.2rem",
               }}
             >
@@ -93,46 +101,67 @@ export default function App() {
 
             {/* Direção */}
             {s.id === "direcao" && etapa === "inicio" && (
-              <button
-                onClick={() =>
-                  avancar(
-                    "pedidoServicos",
-                    "📌 Direção solicitou material de limpeza aos Serviços Gerais"
-                  )
-                }
+              <select
+                onChange={(e) => {
+                  const escolha = e.target.value;
+                  if (escolha) {
+                    avancar(
+                      "pedidoServicos",
+                      `📌 Direção solicitou ${escolha} aos Serviços Gerais`
+                    );
+                  }
+                }}
+                defaultValue=""
                 style={{
-                  padding: "8px 16px",
+                  width: "100%",
+                  padding: "8px",
                   borderRadius: "8px",
-                  backgroundColor: "#111", // preto
-                  color: "#fff",
-                  border: "none",
+                  border: "1px solid #ccc",
                   cursor: "pointer",
                 }}
               >
-                Solicitar Material de Limpeza
-              </button>
+                <option value="" disabled>
+                  Escolha um tipo de material
+                </option>
+                <option value="material de limpeza">Material de Limpeza</option>
+                <option value="material de escritório">Material de Escritório</option>
+                <option value="equipamento eletrônico">Equipamento Eletrônico</option>
+                <option value="uniformes">Uniformes</option>
+              </select>
             )}
 
             {/* Serviços Gerais */}
             {s.id === "servicos" && etapa === "pedidoServicos" && (
-              <button
-                onClick={() =>
-                  avancar(
-                    "solicitacaoAlmox",
-                    "🧹 Serviços Gerais enviou pedido ao Almoxarifado"
-                  )
-                }
+              <select
+                onChange={(e) => {
+                  const escolha = e.target.value;
+                  if (escolha) {
+                    avancar(
+                      "solicitacaoAlmox",
+                      `🧹 Serviços Gerais ${escolha} ao Almoxarifado`
+                    );
+                  }
+                }}
+                defaultValue=""
                 style={{
-                  padding: "8px 16px",
+                  width: "100%",
+                  padding: "8px",
                   borderRadius: "8px",
-                  backgroundColor: "#16a34a",
-                  color: "#fff",
-                  border: "none",
+                  border: "1px solid #ccc",
                   cursor: "pointer",
                 }}
               >
-                Enviar Pedido ao Almoxarifado
-              </button>
+                <option value="" disabled>
+                  Escolha uma ação
+                </option>
+                <option value="enviou pedido">Enviou Pedido</option>
+                <option value="solicitou reposição de estoque">
+                  Solicitou Reposição de Estoque
+                </option>
+                <option value="informou necessidade de compra">
+                  Informou Necessidade de Compra
+                </option>
+              </select>
             )}
             {s.id === "servicos" && etapa === "recebeuMateriais" && (
               <p style={{ color: "#15803d", fontWeight: "bold" }}>
@@ -147,24 +176,33 @@ export default function App() {
 
             {/* Setor Solicitante */}
             {s.id === "solicitante" && etapa === "inicio" && (
-              <button
-                onClick={() =>
-                  avancar(
-                    "solicitacaoAlmox",
-                    "📝 Setor Solicitante requisitou materiais ao Almoxarifado"
-                  )
-                }
+              <select
+                onChange={(e) => {
+                  const pedido = e.target.value;
+                  if (pedido) {
+                    avancar(
+                      "solicitacaoAlmox",
+                      `📝 Setor Solicitante requisitou ${pedido} ao Almoxarifado`
+                    );
+                  }
+                }}
+                defaultValue=""
                 style={{
-                  padding: "8px 16px",
+                  width: "100%",
+                  padding: "8px",
                   borderRadius: "8px",
-                  backgroundColor: "#111", // preto
-                  color: "#fff",
-                  border: "none",
+                  border: "1px solid #ccc",
                   cursor: "pointer",
                 }}
               >
-                Solicitar Materiais Diversos
-              </button>
+                <option value="" disabled>
+                  Selecione uma opção
+                </option>
+                <option value="materiais de limpeza">Materiais de Limpeza</option>
+                <option value="papel A4 e canetas">Papel A4 e Canetas</option>
+                <option value="cartucho de impressora">Cartucho de Impressora</option>
+                <option value="álcool e desinfetante">Álcool e Desinfetante</option>
+              </select>
             )}
             {s.id === "solicitante" && etapa === "recebeuMateriais" && (
               <p style={{ color: "#15803d", fontWeight: "bold" }}>
@@ -179,39 +217,42 @@ export default function App() {
 
             {/* Almoxarifado */}
             {s.id === "almox" && etapa === "solicitacaoAlmox" && (
-              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                <p style={{ fontWeight: "500", color: "#374151" }}>⚖️ Verificar estoque...</p>
-                <button
-                  onClick={() =>
-                    avancar("recebeuMateriais", "📦 Almoxarifado entregou materiais")
+              <select
+                onChange={(e) => {
+                  const status = e.target.value;
+                  if (status === "disponivel") {
+                    avancar("recebeuMateriais", "📦 Almoxarifado entregou materiais");
+                  } else if (status === "indisponivel") {
+                    avancar("faltaMateriais", "⚠️ Almoxarifado informou falta de materiais");
+                  } else if (status === "aguardando entrega") {
+                    avancar(
+                      "aguardandoEntrega",
+                      "⏳ Almoxarifado informou que os materiais estão aguardando entrega"
+                    );
                   }
-                  style={{
-                    padding: "8px 16px",
-                    borderRadius: "8px",
-                    backgroundColor: "#16a34a",
-                    color: "#fff",
-                    border: "none",
-                    cursor: "pointer",
-                  }}
-                >
-                  Materiais Disponíveis
-                </button>
-                <button
-                  onClick={() =>
-                    avancar("faltaMateriais", "⚠️ Almoxarifado informou falta de materiais")
-                  }
-                  style={{
-                    padding: "8px 16px",
-                    borderRadius: "8px",
-                    backgroundColor: "#b91c1c",
-                    color: "#fff",
-                    border: "none",
-                    cursor: "pointer",
-                  }}
-                >
-                  Materiais Indisponíveis
-                </button>
-              </div>
+                }}
+                defaultValue=""
+                style={{
+                  width: "100%",
+                  padding: "8px",
+                  borderRadius: "8px",
+                  border: "1px solid #ccc",
+                  cursor: "pointer",
+                }}
+              >
+                <option value="" disabled>
+                  Verificar estoque
+                </option>
+                <option value="disponivel">Materiais Disponíveis</option>
+                <option value="indisponivel">Materiais Indisponíveis</option>
+                <option value="aguardando entrega">Aguardando Entrega</option>
+              </select>
+            )}
+
+            {s.id === "almox" && etapa === "aguardandoEntrega" && (
+              <p style={{ color: "#eab308", fontWeight: "bold" }}>
+                ⏳ Aguardando Entrega dos Materiais
+              </p>
             )}
 
             {/* Relatório SISMAT */}
@@ -247,10 +288,7 @@ export default function App() {
       >
         <h3 style={{ fontWeight: "bold", marginBottom: "10px" }}>📜 Histórico do Fluxo:</h3>
         <button
-          onClick={() => {
-            setEtapa("inicio");
-            setLog([]);
-          }}
+          onClick={resetarFluxo}
           style={{
             marginBottom: "20px",
             padding: "8px 16px",
@@ -264,14 +302,28 @@ export default function App() {
         >
           Resetar Fluxo
         </button>
+
+        {/* Histórico Atual */}
         {log.length === 0 ? (
-          <p style={{ color: "#6b7280" }}>Nenhuma ação registrada ainda.</p>
+          <p style={{ color: "#6b7280" }}>Nenhuma ação registrada nesta execução.</p>
         ) : (
-          <ul style={{ listStyleType: "disc", paddingLeft: "20px", textAlign: "left", gap: "5px" }}>
+          <ol style={{ listStyleType: "decimal", paddingLeft: "20px", textAlign: "left" }}>
             {log.map((item, i) => (
               <li key={i}>{item}</li>
             ))}
-          </ul>
+          </ol>
+        )}
+
+        {/* Histórico Anterior */}
+        {historicoAnterior.length > 0 && (
+          <div style={{ marginTop: "25px", borderTop: "1px solid #ccc", paddingTop: "15px" }}>
+            <h4 style={{ fontWeight: "bold", marginBottom: "8px" }}>📦 Último Fluxo Registrado:</h4>
+            <ol style={{ listStyleType: "decimal", paddingLeft: "20px", textAlign: "left" }}>
+              {historicoAnterior.map((item, i) => (
+                <li key={i}>{item}</li>
+              ))}
+            </ol>
+          </div>
         )}
       </div>
     </div>
