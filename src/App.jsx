@@ -36,6 +36,7 @@ export default function App() {
   const [log, setLog] = useState([]);
   const [tipoSelecionado, setTipoSelecionado] = useState(null);
   const [relatorioRecebido, setRelatorioRecebido] = useState(false);
+  const [nomeSetorSolicitante, setNomeSetorSolicitante] = useState(null); // 👈 Novo estado
 
   useEffect(() => {
     document.body.style.backgroundColor = "transparent";
@@ -56,6 +57,7 @@ export default function App() {
       setLog([]);
       setTipoSelecionado(null);
       setRelatorioRecebido(false);
+      setNomeSetorSolicitante(null);
     }
   };
 
@@ -66,7 +68,7 @@ export default function App() {
     if (confirmar) setEtapa("inicioEscolha");
   };
 
-  // Determina qual setor está ativo em cada etapa
+  // Determina qual setor está ativo
   const setorAtivo = (() => {
     if (["pedidoLimpeza"].includes(etapa)) return "servicos";
     if (
@@ -149,9 +151,15 @@ export default function App() {
             </p>
             <button
               style={botaoEstilo("#9333ea")}
-              onClick={() =>
-                avancar("inicio", "▶ Fluxo iniciado pelo Setor Solicitante")
-              }
+              onClick={() => {
+                const nome = window.prompt("Digite o nome do setor solicitante:");
+                if (nome && nome.trim() !== "") {
+                  setNomeSetorSolicitante(nome.trim());
+                  avancar("inicio", `▶ Fluxo iniciado pelo Setor Solicitante (${nome.trim()})`);
+                } else {
+                  alert("Por favor, digite um nome válido para o setor solicitante.");
+                }
+              }}
             >
               Iniciar
             </button>
@@ -193,6 +201,19 @@ export default function App() {
       >
         Simulação do Fluxo de Suprimento de Materiais
       </h1>
+
+      {nomeSetorSolicitante && (
+        <p
+          style={{
+            color: "#fff",
+            marginBottom: "10px",
+            fontWeight: "bold",
+            textShadow: "0 1px 3px rgba(0,0,0,0.7)",
+          }}
+        >
+          🏢 Setor Solicitante: {nomeSetorSolicitante}
+        </p>
+      )}
 
       <button
         onClick={voltarInicio}
@@ -237,7 +258,6 @@ export default function App() {
                 transition: "all 0.3s ease",
               }}
             >
-              {/* Seta só aparece sobre o setor ativo */}
               {ativo && (
                 <div
                   style={{
@@ -265,7 +285,7 @@ export default function App() {
                 {s.nome}
               </h2>
 
-              {/* Fluxo de cada setor */}
+              {/* Serviços Gerais */}
               {s.id === "servicos" && etapa === "pedidoLimpeza" && (
                 <select
                   defaultValue=""
@@ -290,6 +310,7 @@ export default function App() {
                 </select>
               )}
 
+              {/* Setor Solicitante */}
               {s.id === "solicitante" && etapa === "inicio" && (
                 <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                   <button onClick={() => { setTipoSelecionado("limpeza"); setEtapa("escolhendoLimpeza"); }} style={botaoEstilo("#3b82f6")}>🧴 Materiais de Limpeza</button>
@@ -299,6 +320,7 @@ export default function App() {
                 </div>
               )}
 
+              {/* Escolha dos itens */}
               {["escolhendoLimpeza", "escolhendoEletronico", "escolhendoEquipamento", "escolhendoUniforme"].includes(etapa) &&
                 s.id === "solicitante" && (
                   <select
@@ -317,7 +339,7 @@ export default function App() {
                             : "Uniformes";
                         avancar(
                           "solicitacaoAlmox",
-                          `📦 Setor Solicitante solicitou ${item} (${nomeTipo}) ao Almoxarifado`
+                          `📦 ${nomeSetorSolicitante || "Setor Solicitante"} solicitou ${item} (${nomeTipo}) ao Almoxarifado`
                         );
                       }
                     }}
