@@ -85,11 +85,11 @@ export default function App() {
         }}
       >
         {setores.map((s) => {
-          // 🔧 Lógica corrigida: apenas UM setor ativo por vez
           const ativo =
             (s.id === "direcao" &&
               ["inicio", "limpeza", "eletronico", "equipamento", "uniforme"].includes(etapa)) ||
             (s.id === "servicos" && etapa === "pedidoServicos") ||
+            (s.id === "solicitante" && etapa === "inicio") ||
             (s.id === "almox" &&
               ["solicitacaoAlmox", "aguardandoEntrega", "recebeuMateriais", "faltaMateriais"].includes(etapa));
 
@@ -101,7 +101,7 @@ export default function App() {
                 borderRadius: "12px",
                 padding: "20px",
                 boxShadow: ativo
-                  ? "0 0 12px rgba(156,163,175,0.7)" // sombra cinza suave
+                  ? "0 0 12px rgba(156,163,175,0.7)"
                   : "0 4px 8px rgba(0,0,0,0.1)",
                 minWidth: "220px",
                 maxWidth: "250px",
@@ -112,7 +112,6 @@ export default function App() {
                 transition: "all 0.3s ease",
               }}
             >
-              {/* SETA CINZA 🔽 */}
               {ativo && (
                 <div
                   style={{
@@ -121,7 +120,7 @@ export default function App() {
                     left: "50%",
                     transform: "translateX(-50%)",
                     fontSize: "24px",
-                    color: "#6b7280", // cinza
+                    color: "#6b7280",
                     animation: "pulse 1s infinite alternate",
                   }}
                 >
@@ -139,6 +138,34 @@ export default function App() {
               >
                 {s.nome}
               </h2>
+
+              {/* SETOR SOLICITANTE */}
+              {s.id === "solicitante" && etapa === "inicio" && (
+                <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                  <input
+                    type="text"
+                    placeholder="Digite o setor solicitante..."
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && e.target.value.trim() !== "") {
+                        avancar(
+                          "limpeza", // mantém seu fluxo original; mude para "pedidoServicos" se preferir
+                          `📨 Solicitação iniciada pelo setor: ${e.target.value.trim()}`
+                        );
+                        e.target.value = "";
+                      }
+                    }}
+                    style={{
+                      padding: "8px",
+                      borderRadius: "8px",
+                      border: "1px solid #ccc",
+                      textAlign: "center",
+                    }}
+                  />
+                  <small style={{ color: "#6b7280" }}>
+                    Pressione <b>Enter</b> para confirmar o setor
+                  </small>
+                </div>
+              )}
 
               {/* DIREÇÃO */}
               {s.id === "direcao" && etapa === "inicio" && (
@@ -158,7 +185,8 @@ export default function App() {
                 </div>
               )}
 
-              {s.id === "direcao" && etapa === "limpeza" &&
+              {s.id === "direcao" &&
+                etapa === "limpeza" &&
                 selectEtapa(
                   "Escolha o item de limpeza",
                   [
@@ -173,7 +201,8 @@ export default function App() {
                     )
                 )}
 
-              {s.id === "direcao" && etapa === "eletronico" &&
+              {s.id === "direcao" &&
+                etapa === "eletronico" &&
                 selectEtapa(
                   "Escolha o material eletrônico",
                   [
@@ -188,7 +217,8 @@ export default function App() {
                     )
                 )}
 
-              {s.id === "direcao" && etapa === "equipamento" &&
+              {s.id === "direcao" &&
+                etapa === "equipamento" &&
                 selectEtapa(
                   "Escolha o equipamento eletrônico",
                   ["Monitor e Teclado", "Impressora e Scanner", "Projetor e Caixa de Som"],
@@ -199,7 +229,8 @@ export default function App() {
                     )
                 )}
 
-              {s.id === "direcao" && etapa === "uniforme" &&
+              {s.id === "direcao" &&
+                etapa === "uniforme" &&
                 selectEtapa(
                   "Escolha o uniforme",
                   [
@@ -296,19 +327,20 @@ export default function App() {
                 </div>
               )}
 
-              {s.id === "almox" && (etapa === "recebeuMateriais" || etapa === "faltaMateriais") && (
-                <div
-                  style={{
-                    marginTop: "15px",
-                    paddingTop: "10px",
-                    borderTop: "1px solid #d1d5db",
-                    fontSize: "0.9rem",
-                    color: "#4b5563",
-                  }}
-                >
-                  🗂 Relatório atualizado no SISMAT
-                </div>
-              )}
+              {s.id === "almox" &&
+                (etapa === "recebeuMateriais" || etapa === "faltaMateriais") && (
+                  <div
+                    style={{
+                      marginTop: "15px",
+                      paddingTop: "10px",
+                      borderTop: "1px solid #d1d5db",
+                      fontSize: "0.9rem",
+                      color: "#4b5563",
+                    }}
+                  >
+                    🗂 Relatório atualizado no SISMAT
+                  </div>
+                )}
             </div>
           );
         })}
