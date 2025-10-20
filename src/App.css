@@ -1,19 +1,38 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: left;
+/* Remove qualquer margem, padding e fundo preto do html/body */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff !important; /* ou transparent, se quiser que a imagem cubra tudo */
+  overflow: hidden;
 }
 
+/* Garante que o conteúdo principal ocupe toda a tela */
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Mantém suas classes originais */
 .logo {
   height: 6em;
   padding: 1.5em;
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -41,6 +60,7 @@
   color: #888;
 }
 
+/* Mantém a animação pulse usada nos cards */
 @keyframes pulse {
   from {
     transform: translateX(-50%) scale(1);
